@@ -40,42 +40,34 @@ let theme = createTheme({
   typography: {
     fontFamily: '"Inter", sans-serif',
     h1: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "bold",
       fontSize: "1.625rem",
     },
     h2: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "bold",
       fontSize: "1.375rem",
     },
     h3: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "bold",
       fontSize: "1.125rem",
     },
     subtitle1: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "regular",
       fontSize: "1rem",
     },
     body1: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "regular",
       fontSize: "0.875rem",
     },
     body2: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "SemiBold",
       fontSize: "0.875rem",
     },
     caption: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "regular",
       fontSize: "0.75rem",
     },
     button: {
-      fontFamily: '"Inter", sans-serif',
       fontWeight: "600",
       fontSize: "1rem",
     },
@@ -84,6 +76,13 @@ let theme = createTheme({
 
 theme = createTheme(theme, {
   components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          backgroundColor: theme.palette.grey[50],
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

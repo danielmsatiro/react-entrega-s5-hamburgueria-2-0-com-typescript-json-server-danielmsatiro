@@ -8,7 +8,6 @@ import {
   Box,
   Container,
 } from "@mui/material";
-import {} from "@mui/system";
 import { theme } from "../../styles/theme";
 import Logo from "../../assets/logo.svg";
 import Balls from "../../assets/balls.svg";
@@ -16,38 +15,44 @@ import { FiShoppingBag } from "react-icons/fi";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import { api } from "../../services/api";
 
-interface SignInData {
+interface SignUpData {
+  name: string;
   email: string;
   password: string;
+  confirm_password?: string;
 }
 
-const signInSchema = yup.object().shape({
+const signUpSchema = yup.object().shape({
+  name: yup.string().required("Nome obrigatório"),
   email: yup.string().required("Email obrigatório").email("Email inválido"),
   password: yup.string().required("Senha obrigatória"),
+  confirm_password: yup
+    .string()
+    .required("Confirmação de senha obrigatória")
+    .oneOf([yup.ref("password")], "Senhas diferentes"),
 });
 
-export const Login = () => {
+export const Signup = () => {
   const upMD = useMediaQuery(theme.breakpoints.up("md"));
 
   const [loading, setLoading] = useState(false);
-
-  const { signIn } = useAuth();
 
   const {
     formState: { errors },
     register,
     handleSubmit,
-  } = useForm<SignInData>({
-    resolver: yupResolver(signInSchema),
+  } = useForm<SignUpData>({
+    resolver: yupResolver(signUpSchema),
   });
 
-  const handleSignIn = (data: SignInData) => {
+  const handleSignUp = ({ name, email, password }: SignUpData) => {
     setLoading(true);
-    signIn(data)
+    api
+      .post("/register", { name, email, password })
       .then((res) => {
         console.log(res);
         setLoading(false);
@@ -67,59 +72,12 @@ export const Login = () => {
         sx={{ height: "100vh", width: "100%", padding: "19px" }}
         justifyContent="center"
         alignContent="center"
-        flexWrap="wrap-reverse"
+        flexWrap="wrap"
       >
         <Grid
           md={6}
           item
-          component="form"
-          sx={{
-            border: `2px solid ${theme.palette.grey[50]}`,
-            width: "100%",
-            padding: "24px",
-
-            borderRadius: "5px",
-          }}
-          onSubmit={handleSubmit(handleSignIn)}
-        >
-          <Stack spacing={2}>
-            <Typography variant="h3">Login</Typography>
-            <TextField
-              label="Email"
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-            />
-            <TextField
-              label="Senha"
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              type="password"
-            />
-            <Button variant="default" type="submit">
-              Logar
-            </Button>
-            <Typography
-              variant="body1"
-              color={theme.palette.grey[300]}
-              textAlign="center"
-            >
-              Crie sua conta para saborear muitas delicias e<br />
-              matar sua fome
-            </Typography>
-            <Button
-              variant="default-grey"
-              onClick={() => history.push("/signup")}
-            >
-              Cadastrar
-            </Button>
-          </Stack>
-        </Grid>
-        <Grid
-          md={6}
-          item
-          paddingLeft={upMD ? "60px" : "0px"}
+          paddingRight={upMD ? "60px" : "0px"}
           paddingBottom={upMD ? "0px" : "24px"}
           sx={{
             width: "100%",
@@ -173,6 +131,71 @@ export const Login = () => {
                 <img src={Balls} alt="" />
               </Box>
             )}
+          </Stack>
+        </Grid>
+        <Grid
+          md={6}
+          item
+          component="form"
+          sx={{
+            border: `2px solid ${theme.palette.grey[50]}`,
+            width: "100%",
+            padding: "24px",
+            borderRadius: "5px",
+          }}
+          onSubmit={handleSubmit(handleSignUp)}
+        >
+          <Stack spacing={2}>
+            <Stack
+              flexDirection="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography variant="h3">Cadastro</Typography>
+              <Button
+                variant="text"
+                sx={{
+                  color: theme.palette.grey[300],
+                  fontSize: "0.875rem",
+                  textDecoration: "underline",
+                  padding: "0px",
+                  "&:hover": {
+                    backgroundColor: "white",
+                  },
+                }}
+              >
+                Retornar para o login
+              </Button>
+            </Stack>
+            <TextField
+              label="Nome"
+              {...register("name")}
+              error={!!errors.name}
+              helperText={errors.name?.message}
+            />
+            <TextField
+              label="Email"
+              {...register("email")}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
+            <TextField
+              label="Senha"
+              {...register("password")}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              type="password"
+            />
+            <TextField
+              label="Confirmar Senha"
+              {...register("confirm_password")}
+              error={!!errors.confirm_password}
+              helperText={errors.confirm_password?.message}
+              type="password"
+            />
+            <Button type="submit" variant="default-grey">
+              Cadastrar
+            </Button>
           </Stack>
         </Grid>
       </Grid>
