@@ -163,6 +163,7 @@ export const Signup = () => {
                     backgroundColor: "white",
                   },
                 }}
+                onClick={() => history.push("/")}
               >
                 Retornar para o login
               </Button>
