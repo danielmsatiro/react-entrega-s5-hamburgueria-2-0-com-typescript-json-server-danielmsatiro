@@ -18,7 +18,7 @@ export const Dashboard = () => {
     <>
       <Header />
       <Container maxWidth="lg" xs={{ margimX: { lg: "115px" } }}>
-        <Grid container spacing={4} paddingTop="25px">
+        <Grid container spacing={4} paddingTop="25px" justifyContent="center">
           {products.map((product) => (
             <Grid item key={product.id}>
               <Card

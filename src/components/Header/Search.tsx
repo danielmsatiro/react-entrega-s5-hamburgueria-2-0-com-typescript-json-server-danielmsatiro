@@ -1,16 +1,14 @@
-import {
-  FormControl,
-  IconButton,
-  Input,
-  InputBase,
-  Stack,
-} from "@mui/material";
+import { IconButton, InputBase, Stack } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
 import { theme } from "../../styles/theme";
-import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
-import { BlockList } from "net";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useProducts } from "../../contexts/ProductsContext";
+
+interface SearchData {
+  nameOrCategory: string;
+}
 
 interface SearchProps {
   showSearch: boolean;
@@ -19,7 +17,13 @@ interface SearchProps {
 
 export const Search = ({ showSearch, setShowSearch }: SearchProps) => {
   const [focus, setFocus] = useState(false);
-  const toggle = () => setFocus(!focus);
+  const { searchProduct } = useProducts();
+
+  const handleSearch = ({ nameOrCategory }: SearchData) => {
+    searchProduct(nameOrCategory);
+  };
+
+  const { register, handleSubmit } = useForm<SearchData>();
 
   return (
     <>
@@ -36,6 +40,7 @@ export const Search = ({ showSearch, setShowSearch }: SearchProps) => {
       </IconButton>
       <Box
         component="form"
+        onSubmit={handleSubmit(handleSearch)}
         sx={{
           marginLeft: "14px",
           border: `2px solid`,
@@ -53,9 +58,10 @@ export const Search = ({ showSearch, setShowSearch }: SearchProps) => {
         <Stack flexDirection="row">
           <InputBase
             placeholder="Digitar Pesquisa"
-            onFocus={() => toggle()}
+            {...register("nameOrCategory")}
+            onFocus={() => setFocus(!focus)}
             onBlur={() => {
-              toggle();
+              setFocus(!focus);
               setShowSearch(false);
             }}
           />

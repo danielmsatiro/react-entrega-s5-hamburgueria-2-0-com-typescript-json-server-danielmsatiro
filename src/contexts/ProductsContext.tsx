@@ -22,14 +22,8 @@ interface Product {
 
 interface ProductContextData {
   products: Product[];
-
   loadProducts: () => Promise<void>;
-
-  searchProduct: (
-    productTitle: string,
-    accessToken: string,
-    userId: string
-  ) => Promise<void>;
+  searchProduct: (nameOrCategory: string) => Promise<void>;
   notFound: boolean;
   productNotFound: string;
 }
@@ -62,27 +56,26 @@ const ProductProvider = ({ children }: ProductProviderProps) => {
     }
   }, []);
 
-  const searchProduct = useCallback(
-    async (productTitle: string, accessToken: string, userId: string) => {
-      const response = await api.get(
-        `/products?title_like=${productTitle}&userId=${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+  const searchProduct = useCallback(async (nameOrCategory: string) => {
+    const responseName = await api.get(`/products?name_like=${nameOrCategory}`);
 
-      if (!response.data.length) {
-        setProductNotFound(productTitle);
-        return setNotFound(true);
-      }
-
+    if (!responseName.data.length) {
+      setProductNotFound(nameOrCategory);
+      setNotFound(true);
+    } else {
       setNotFound(false);
-      setProducts(response.data);
-    },
-    []
-  );
+      return setProducts(responseName.data);
+    }
+
+    const responseCategory = await api.get(
+      `/products?category_like=${nameOrCategory}`
+    );
+
+    if (!!responseCategory.data.length) {
+      setNotFound(false);
+      setProducts(responseCategory.data);
+    }
+  }, []);
 
   return (
     <ProductContext.Provider

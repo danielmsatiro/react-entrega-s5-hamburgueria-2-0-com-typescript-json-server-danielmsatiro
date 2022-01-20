@@ -49,11 +49,9 @@ export const Login = () => {
     setLoading(true);
     signIn(data)
       .then((res) => {
-        console.log(res);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
       });
   };
