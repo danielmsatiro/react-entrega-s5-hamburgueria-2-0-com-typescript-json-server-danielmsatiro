@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Cart } from "../../components/Cart";
 
 export const Dashboard = () => {
-  const [loading, setLoading] = useState(true);
+  /*   const [loading, setLoading] = useState(true); */
   const { products, loadProducts } = useProducts();
   const [openCart, setOpenCart] = useState(false);
 
@@ -19,9 +19,9 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    loadProducts().then((res) => {
+    loadProducts() /* .then((res) => {
       setLoading(false);
-    });
+    }) */;
   }, []);
 
   return (

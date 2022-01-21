@@ -4,11 +4,9 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
 import { theme } from "../../styles/theme";
 import Logo from "../../assets/logo.svg";
-import { FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { Badge } from "@mui/material";
 import { Search } from "./Search";
@@ -64,11 +62,13 @@ export const Header = ({ handleCartOpen }: HeaderProps) => {
             sx={{
               display: { xs: showSearch ? "none" : "block" },
               md: "block",
+              backgroundImage: `url(${Logo})`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "contain",
+              width: "240px",
+              height: "36px",
             }}
-          >
-            <img src={Logo} alt="" />
-          </Box>
-
+          />
           <Box sx={{ flexGrow: 1 }} />
           <Search showSearch={showSearch} setShowSearch={setShowSearch} />
 
