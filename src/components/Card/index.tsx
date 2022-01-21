@@ -1,4 +1,6 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useAuth } from "../../contexts/AuthContext";
+import { useCart } from "../../contexts/CartContext";
 import { theme } from "../../styles/theme";
 
 interface CardProps {
@@ -10,6 +12,28 @@ interface CardProps {
 }
 
 export const Card = ({ name, category, price, img, id }: CardProps) => {
+  const { accessToken, user } = useAuth();
+  const { cart, createProduct, addProduct } = useCart();
+
+  const handleProduct = () => {
+    /* Busca um produto que já exista com o mesmo name no Cart*/
+    const productFound = cart.find((product) => product.name === name);
+
+    if (!productFound) {
+      const newProduct = {
+        name,
+        category,
+        price,
+        img,
+        userId: user.id,
+        quantity: 1,
+      };
+      return createProduct(newProduct, accessToken);
+    }
+
+    addProduct(productFound.quantity, productFound.id, user.id, accessToken);
+  };
+
   return (
     <Box
       width="300px"
@@ -52,7 +76,7 @@ export const Card = ({ name, category, price, img, id }: CardProps) => {
             R$ {price.toFixed(2)}
           </Typography>
           <Button
-            onClick={() => console.log(id)}
+            onClick={() => handleProduct()}
             variant="medium-grey"
             sx={{ width: "106px" }}
           >

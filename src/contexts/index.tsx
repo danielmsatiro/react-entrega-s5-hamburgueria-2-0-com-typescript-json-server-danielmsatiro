@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { theme } from "../styles/theme";
 import { AuthProvider } from "./AuthContext";
 import { ProductProvider } from "./ProductsContext";
+import { CartProvider } from "./CartContext";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -11,7 +12,9 @@ interface AppProviderProps {
 export const AppProvider = ({ children }: AppProviderProps) => (
   <AuthProvider>
     <ProductProvider>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <CartProvider>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </CartProvider>
     </ProductProvider>
   </AuthProvider>
 );

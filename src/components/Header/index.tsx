@@ -12,8 +12,9 @@ import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { Badge } from "@mui/material";
 import { Search } from "./Search";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useCart } from "../../contexts/CartContext";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -27,10 +28,18 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-export const Header = () => {
-  const [showSearch, setShowSearch] = useState(false);
+interface HeaderProps {
+  handleCartOpen: () => void;
+}
 
-  const { signOut } = useAuth();
+export const Header = ({ handleCartOpen }: HeaderProps) => {
+  const [showSearch, setShowSearch] = useState(false);
+  const { cart, loadCart } = useCart();
+  const { user, accessToken, signOut } = useAuth();
+
+  useEffect(() => {
+    loadCart(user.id, accessToken);
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -63,8 +72,8 @@ export const Header = () => {
           <Box sx={{ flexGrow: 1 }} />
           <Search showSearch={showSearch} setShowSearch={setShowSearch} />
 
-          <StyledBadge badgeContent={4} color="primary">
-            <IconButton>
+          <StyledBadge badgeContent={cart.length} color="primary">
+            <IconButton onClick={handleCartOpen}>
               <FaShoppingCart color={theme.palette.grey[400]} size="25px" />
             </IconButton>
           </StyledBadge>
