@@ -7,6 +7,8 @@ import {
   useMediaQuery,
   Box,
   Container,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {} from "@mui/system";
 import { theme } from "../../styles/theme";
@@ -32,10 +34,18 @@ const signInSchema = yup.object().shape({
 
 export const Login = () => {
   const upMD = useMediaQuery(theme.breakpoints.up("md"));
-
   const [loading, setLoading] = useState(false);
-
   const { signIn } = useAuth();
+
+  const [openError, setOpenError] = useState(false);
+
+  const handleError = () => {
+    setOpenError(true);
+  };
+
+  const handleCloseError = () => {
+    setOpenError(false);
+  };
 
   const {
     formState: { errors },
@@ -53,6 +63,7 @@ export const Login = () => {
       })
       .catch((err) => {
         setLoading(false);
+        handleError();
       });
   };
 
@@ -60,6 +71,20 @@ export const Login = () => {
 
   return (
     <Container maxWidth="lg">
+      <Snackbar
+        open={openError}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseError}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Email ou senha incorretos
+        </Alert>
+      </Snackbar>
       <Grid
         container
         sx={{ height: "100vh", width: "100%", padding: "19px" }}
