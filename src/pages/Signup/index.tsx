@@ -42,14 +42,9 @@ export const Signup = () => {
   const upMD = useMediaQuery(theme.breakpoints.up("md"));
   const [loading, setLoading] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const [openInfo, setOpenInfo] = useState(false);
 
   const handleCloseError = () => {
     setOpenError(false);
-  };
-
-  const handleCloseInfo = () => {
-    setOpenInfo(false);
   };
 
   const {
@@ -60,21 +55,21 @@ export const Signup = () => {
     resolver: yupResolver(signUpSchema),
   });
 
+  const history = useHistory();
+
   const handleSignUp = ({ name, email, password }: SignUpData) => {
     setLoading(true);
     api
       .post("/register", { name, email, password })
       .then((res) => {
         setLoading(false);
-        setOpenInfo(true);
+        history.push("/");
       })
       .catch((err) => {
         setOpenError(true);
         setLoading(false);
       });
   };
-
-  const history = useHistory();
 
   return (
     <>
@@ -90,16 +85,6 @@ export const Signup = () => {
           sx={{ width: "100%" }}
         >
           Email já cadastrado
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={openInfo}
-        autoHideDuration={6000}
-        onClose={handleCloseInfo}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert onClose={handleCloseInfo} severity="info" sx={{ width: "100%" }}>
-          Cadastro Realizado! Retorne ao Login.
         </Alert>
       </Snackbar>
       <Container maxWidth="lg">

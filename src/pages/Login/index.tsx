@@ -118,11 +118,7 @@ export const Login = () => {
             <Button variant="default" type="submit">
               Logar
             </Button>
-            <Typography
-              variant="body1"
-              color={theme.palette.grey[300]}
-              textAlign="center"
-            >
+            <Typography variant="body1" color="grey.300" textAlign="center">
               Crie sua conta para saborear muitas delicias e<br />
               matar sua fome
             </Typography>
@@ -178,7 +174,7 @@ export const Login = () => {
               <Typography
                 component="p"
                 variant="subtitle1"
-                color={theme.palette.grey[300]}
+                color="grey.300"
                 maxWidth="261px"
                 ml="19px"
               >

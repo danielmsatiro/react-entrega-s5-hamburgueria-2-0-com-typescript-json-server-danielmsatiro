@@ -82,7 +82,6 @@ const CartProvider = ({ children }: CartProviderProps) => {
         })
         .then((response: AxiosResponse<Product>) => {
           setCart((oldCart) => [...oldCart, response.data]);
-          console.log("Produto adicionado ao carrinho");
         })
         .catch((err) => console.log("Erro no createProduct", err));
     },
@@ -108,7 +107,6 @@ const CartProvider = ({ children }: CartProviderProps) => {
         )
         .then((_) => {
           loadCart(userId, accessToken);
-          console.log("Adicionou mais 1 item");
         })
         .catch((err) => console.log("Erro no addProduct", err));
     },
