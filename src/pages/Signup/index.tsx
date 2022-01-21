@@ -7,6 +7,8 @@ import {
   useMediaQuery,
   Box,
   Container,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { theme } from "../../styles/theme";
 import Logo from "../../assets/logo.svg";
@@ -38,8 +40,12 @@ const signUpSchema = yup.object().shape({
 
 export const Signup = () => {
   const upMD = useMediaQuery(theme.breakpoints.up("md"));
-
   const [loading, setLoading] = useState(false);
+  const [openError, setOpenError] = useState(false);
+
+  const handleCloseError = () => {
+    setOpenError(false);
+  };
 
   const {
     formState: { errors },
@@ -54,11 +60,10 @@ export const Signup = () => {
     api
       .post("/register", { name, email, password })
       .then((res) => {
-        console.log(res);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        setOpenError(true);
         setLoading(false);
       });
   };
@@ -67,6 +72,20 @@ export const Signup = () => {
 
   return (
     <Container maxWidth="lg">
+      <Snackbar
+        open={openError}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseError}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Email já cadastrado
+        </Alert>
+      </Snackbar>
       <Grid
         container
         sx={{ height: "100vh", width: "100%", padding: "19px" }}

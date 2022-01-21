@@ -36,12 +36,7 @@ export const Login = () => {
   const upMD = useMediaQuery(theme.breakpoints.up("md"));
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
-
   const [openError, setOpenError] = useState(false);
-
-  const handleError = () => {
-    setOpenError(true);
-  };
 
   const handleCloseError = () => {
     setOpenError(false);
@@ -63,7 +58,7 @@ export const Login = () => {
       })
       .catch((err) => {
         setLoading(false);
-        handleError();
+        setOpenError(true);
       });
   };
 
