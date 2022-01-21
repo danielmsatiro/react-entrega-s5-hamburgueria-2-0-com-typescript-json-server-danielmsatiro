@@ -90,7 +90,12 @@ export const Cart = ({ handleCartClose, openCart }: CartProps) => {
                     color="grey.600"
                   >
                     R${" "}
-                    {cart.reduce((acc, { price }) => acc + price, 0).toFixed(2)}
+                    {cart
+                      .reduce(
+                        (acc, { price, quantity }) => acc + price * quantity,
+                        0
+                      )
+                      .toFixed(2)}
                   </Typography>
                 </Stack>
                 <Button

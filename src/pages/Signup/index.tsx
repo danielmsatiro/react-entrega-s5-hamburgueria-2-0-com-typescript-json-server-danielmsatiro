@@ -42,9 +42,14 @@ export const Signup = () => {
   const upMD = useMediaQuery(theme.breakpoints.up("md"));
   const [loading, setLoading] = useState(false);
   const [openError, setOpenError] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
 
   const handleCloseError = () => {
     setOpenError(false);
+  };
+
+  const handleCloseInfo = () => {
+    setOpenInfo(false);
   };
 
   const {
@@ -61,6 +66,7 @@ export const Signup = () => {
       .post("/register", { name, email, password })
       .then((res) => {
         setLoading(false);
+        setOpenInfo(true);
       })
       .catch((err) => {
         setOpenError(true);
@@ -71,7 +77,7 @@ export const Signup = () => {
   const history = useHistory();
 
   return (
-    <Container maxWidth="lg">
+    <>
       <Snackbar
         open={openError}
         autoHideDuration={6000}
@@ -86,139 +92,151 @@ export const Signup = () => {
           Email já cadastrado
         </Alert>
       </Snackbar>
-      <Grid
-        container
-        sx={{ height: "100vh", width: "100%", padding: "19px" }}
-        justifyContent="center"
-        alignContent="center"
-        flexWrap="wrap"
+      <Snackbar
+        open={openInfo}
+        autoHideDuration={6000}
+        onClose={handleCloseInfo}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
+        <Alert onClose={handleCloseInfo} severity="info" sx={{ width: "100%" }}>
+          Cadastro Realizado! Retorne ao Login.
+        </Alert>
+      </Snackbar>
+      <Container maxWidth="lg">
         <Grid
-          md={6}
-          item
-          paddingRight={upMD ? "60px" : "0px"}
-          paddingBottom={upMD ? "0px" : "24px"}
-          sx={{
-            width: "100%",
-          }}
+          container
+          sx={{ height: "100vh", width: "100%", padding: "19px" }}
+          justifyContent="center"
+          alignContent="center"
+          flexWrap="wrap"
         >
-          <Stack spacing={3} justifyContent="center" height="100%">
-            <Box>
-              <img src={Logo} alt="logo" />
-            </Box>
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="space-around"
-              flexWrap="nowrap"
-              spacing={2}
-              sx={{
-                border: `1px solid ${theme.palette.grey[100]}`,
-                width: "100%",
-                padding: "14px",
-                borderRadius: "5px",
-                boxShadow: "0px 4px 40px -20px #00000040",
-              }}
-            >
+          <Grid
+            md={6}
+            item
+            paddingRight={upMD ? "60px" : "0px"}
+            paddingBottom={upMD ? "0px" : "24px"}
+            sx={{
+              width: "100%",
+            }}
+          >
+            <Stack spacing={3} justifyContent="center" height="100%">
+              <Box>
+                <img src={Logo} alt="logo" />
+              </Box>
               <Grid
                 container
                 alignItems="center"
-                justifyContent="center"
-                minWidth="60px"
+                justifyContent="space-around"
+                flexWrap="nowrap"
+                spacing={2}
                 sx={{
-                  backgroundColor: "rgba(39, 174, 96, 0.1);",
-                  height: "60px",
-                  width: "60px",
+                  border: `1px solid ${theme.palette.grey[100]}`,
+                  width: "100%",
+                  padding: "14px",
                   borderRadius: "5px",
+                  boxShadow: "0px 4px 40px -20px #00000040",
                 }}
               >
-                <FiShoppingBag size={20} color={theme.palette.primary.main} />
+                <Grid
+                  container
+                  alignItems="center"
+                  justifyContent="center"
+                  minWidth="60px"
+                  sx={{
+                    backgroundColor: "rgba(39, 174, 96, 0.1);",
+                    height: "60px",
+                    width: "60px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <FiShoppingBag size={20} color={theme.palette.primary.main} />
+                </Grid>
+                <Typography
+                  component="p"
+                  variant="subtitle1"
+                  color={theme.palette.grey[300]}
+                  maxWidth="261px"
+                  ml="19px"
+                >
+                  A vida é como um sanduíche, é preciso recheá-la com os{" "}
+                  <b>melhores</b> ingredientes.
+                </Typography>
               </Grid>
-              <Typography
-                component="p"
-                variant="subtitle1"
-                color={theme.palette.grey[300]}
-                maxWidth="261px"
-                ml="19px"
+              {upMD && (
+                <Box>
+                  <img src={Balls} alt="" />
+                </Box>
+              )}
+            </Stack>
+          </Grid>
+          <Grid
+            md={6}
+            item
+            component="form"
+            sx={{
+              border: `2px solid ${theme.palette.grey[50]}`,
+              width: "100%",
+              padding: "24px",
+              borderRadius: "5px",
+            }}
+            onSubmit={handleSubmit(handleSignUp)}
+          >
+            <Stack spacing={2}>
+              <Stack
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                A vida é como um sanduíche, é preciso recheá-la com os{" "}
-                <b>melhores</b> ingredientes.
-              </Typography>
-            </Grid>
-            {upMD && (
-              <Box>
-                <img src={Balls} alt="" />
-              </Box>
-            )}
-          </Stack>
-        </Grid>
-        <Grid
-          md={6}
-          item
-          component="form"
-          sx={{
-            border: `2px solid ${theme.palette.grey[50]}`,
-            width: "100%",
-            padding: "24px",
-            borderRadius: "5px",
-          }}
-          onSubmit={handleSubmit(handleSignUp)}
-        >
-          <Stack spacing={2}>
-            <Stack
-              flexDirection="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography variant="h3">Cadastro</Typography>
-              <Button
-                variant="text"
-                sx={{
-                  color: theme.palette.grey[300],
-                  fontSize: "0.875rem",
-                  textDecoration: "underline",
-                  padding: "0px",
-                  "&:hover": {
-                    backgroundColor: "white",
-                  },
-                }}
-                onClick={() => history.push("/")}
-              >
-                Retornar para o login
+                <Typography variant="h3">Cadastro</Typography>
+                <Button
+                  variant="text"
+                  sx={{
+                    color: theme.palette.grey[300],
+                    fontSize: "0.875rem",
+                    textDecoration: "underline",
+                    padding: "0px",
+                    "&:hover": {
+                      backgroundColor: "white",
+                    },
+                  }}
+                  onClick={() => history.push("/")}
+                >
+                  Retornar para o login
+                </Button>
+              </Stack>
+              <TextField
+                label="Nome"
+                {...register("name")}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+              <TextField
+                label="Email"
+                {...register("email")}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+              <TextField
+                label="Senha"
+                {...register("password")}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                type="password"
+              />
+              <TextField
+                label="Confirmar Senha"
+                {...register("confirm_password")}
+                error={!!errors.confirm_password}
+                helperText={errors.confirm_password?.message}
+                type="password"
+              />
+              <Button type="submit" variant="default-grey">
+                Cadastrar
               </Button>
             </Stack>
-            <TextField
-              label="Nome"
-              {...register("name")}
-              error={!!errors.name}
-              helperText={errors.name?.message}
-            />
-            <TextField
-              label="Email"
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-            />
-            <TextField
-              label="Senha"
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              type="password"
-            />
-            <TextField
-              label="Confirmar Senha"
-              {...register("confirm_password")}
-              error={!!errors.confirm_password}
-              helperText={errors.confirm_password?.message}
-              type="password"
-            />
-            <Button type="submit" variant="default-grey">
-              Cadastrar
-            </Button>
-          </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 };
