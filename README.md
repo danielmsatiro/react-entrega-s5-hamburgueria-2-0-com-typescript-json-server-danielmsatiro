@@ -8,10 +8,11 @@ Através de uma api já pré-desenvolvida, que foi adaptada no JSON-SERVER para 
 
 A plataforma permite o cadastro do usuário,que poderá fazer seus pedidos adicionando ao carrinho. É possível entrar no carrinho, alterar as quantidades inseridas, ou excluir os produtos.
 
-### Versão publicada no vercel desenvolvida em **React**: https://react-entrega-s5-hamburgueria-2-0-com-typescript-danielmsatiro.vercel.app/dashboard
+### Versão publicada no vercel desenvolvida em **React** com Typescript: https://react-entrega-s5-hamburgueria-2-0-com-typescript-danielmsatiro.vercel.app/dashboard
 
 ### Tecnologias utilizadas:
-- `Material Design`.
+- `Material Design`
+- `Typescript`
 - `Context API`
 - `axios`
 - `yup`
